@@ -1,8 +1,7 @@
 import { forwardRef, useEffect, useState, useId } from 'react';
 import gsap from 'gsap';
 
-const HERO_VIDEO = 'https://res.cloudinary.com/ll6thxdy/video/upload/f_mp4,q_auto:eco,w_1280/v1786169753/hero_edited_vrnxwh.mp4';
-const HERO_POSTER = 'https://res.cloudinary.com/ll6thxdy/video/upload/so_0,f_auto,q_auto,w_1280/v1786169753/hero_edited_vrnxwh.jpg';
+const HERO_VIDEO = 'https://res.cloudinary.com/ll6thxdy/video/upload/v1786169753/hero_edited_vrnxwh.mp4';
 
 interface HeroProps {
   visible: boolean;
@@ -66,8 +65,7 @@ const Hero = forwardRef<HTMLElement, HeroProps>(({ visible }, ref) => {
         loop
         muted
         playsInline
-        preload="auto"
-        poster={HERO_POSTER}
+        preload="metadata"
         aria-label="Không gian salon Triệu Salon"
         className="absolute inset-0 h-full w-full object-cover object-center"
       >

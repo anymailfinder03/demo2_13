@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect } from 'react';
 import type { VideoItem } from '@/data/videoData';
 
 interface VideoCardProps {
@@ -8,32 +8,8 @@ interface VideoCardProps {
 export default function VideoCard({ video }: VideoCardProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [shouldLoad, setShouldLoad] = useState(false);
 
   useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-
-    const loadObserver = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            setShouldLoad(true);
-            loadObserver.disconnect();
-          }
-        }
-      },
-      { rootMargin: '200px' },
-    );
-
-    loadObserver.observe(container);
-
-    return () => loadObserver.disconnect();
-  }, []);
-
-  useEffect(() => {
-    if (!shouldLoad) return;
-
     const container = containerRef.current;
     const el = videoRef.current;
     if (!container || !el) return;
@@ -58,7 +34,7 @@ export default function VideoCard({ video }: VideoCardProps) {
     return () => {
       observer.disconnect();
     };
-  }, [shouldLoad]);
+  }, []);
 
   return (
     <div
@@ -67,17 +43,16 @@ export default function VideoCard({ video }: VideoCardProps) {
     >
       <video
         ref={videoRef}
+        src={video.src}
         poster={video.poster}
         autoPlay
         muted
         loop
         playsInline
-        preload="none"
+        preload="metadata"
         disablePictureInPicture
         className="h-full w-full object-cover"
-      >
-        {shouldLoad && <source src={video.src} type="video/mp4" />}
-      </video>
+      />
 
       {/* Subtle bottom gradient overlay */}
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-70 transition-opacity duration-500 group-hover:opacity-90" />
